@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Box, Heading, Input, Button, Checkbox, Flex, IconButton, VStack, StackDivider } from "@chakra-ui/react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
-const TodoItem = ({ todo, onDelete }) => (
+const TodoItem = ({ todo, completed, onToggle, onDelete }) => (
   <Flex align="center">
-    <Checkbox mr={4} />
-    <Box flex="1">{todo}</Box>
+    <Checkbox isChecked={completed} onChange={onToggle} mr={4} />
+    <Box flex="1" textDecoration={completed ? "line-through" : "none"}>
+      {todo}
+    </Box>
     <IconButton icon={<FaTrash />} onClick={onDelete} />
   </Flex>
 );
@@ -16,10 +18,12 @@ const Index = () => {
 
   const handleAddTodo = () => {
     if (inputValue.trim() !== "") {
-      setTodos([...todos, inputValue]);
+      setTodos([...todos, { text: inputValue, completed: false }]);
       setInputValue("");
     }
   };
+
+  
 
   const handleDeleteTodo = (index) => {
     const newTodos = todos.filter((_, i) => i !== index);
@@ -37,7 +41,7 @@ const Index = () => {
       </Flex>
       <VStack divider={<StackDivider />} borderWidth={1} borderRadius="md" p={4} align="stretch">
         {todos.map((todo, index) => (
-          <TodoItem key={index} todo={todo} onDelete={() => handleDeleteTodo(index)} />
+          <TodoItem key={index} todo={todo.text} completed={todo.completed} onToggle={() => handleToggleTodo(index)} onDelete={() => handleDeleteTodo(index)} />
         ))}
       </VStack>
     </Box>
