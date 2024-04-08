@@ -23,7 +23,15 @@ const Index = () => {
     }
   };
 
-  
+  const handleToggleTodo = (index) => {
+    const newTodos = todos.map((todo, i) => {
+      if (i === index) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
 
   const handleDeleteTodo = (index) => {
     const newTodos = todos.filter((_, i) => i !== index);
